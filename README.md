@@ -7,7 +7,7 @@ Esse projeto é um banco de dados para o sistema de gerenciamento de contas do b
 
 ```sql
 -- Tabela BANK
-CREATE TABLE bank (
+CREATE TABLE banks (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     address VARCHAR(255),
@@ -16,7 +16,7 @@ CREATE TABLE bank (
 );
 
 -- Tabela USER
-CREATE TABLE "user" ( 
+CREATE TABLE users ( 
     id SERIAL PRIMARY KEY, 
     name VARCHAR(255),
     email VARCHAR(255) UNIQUE,
