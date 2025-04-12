@@ -19,4 +19,16 @@ public class UserService {
     public List<Users> getUser() {
         return userRespository.findAll();
     }
+
+    public Users getUserById(int id) {
+        return userRespository.findById(id).orElse(null);
+    }
+
+    public Users saveUser(Users user) {
+        return userRespository.save(user);
+    }
+
+    public void deleteUser(int id) {
+        userRespository.deleteById(id);
+    }
 }

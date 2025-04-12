@@ -1,11 +1,10 @@
 package com.GueguelasBank.controller;
 
-
-import com.GueguelasBank.contract.UserApi;
+import com.GueguelasBank.contract.BankApi;
 import com.GueguelasBank.dto.Message;
 import com.GueguelasBank.error.Errors;
-import com.GueguelasBank.model.Users;
-import com.GueguelasBank.service.UserService;
+import com.GueguelasBank.model.Banks;
+import com.GueguelasBank.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class UserController implements UserApi {
+public class BankController implements BankApi {
 
     @Autowired
-    private UserService userService;
+    private BankService bankService;
 
     @Override
-    public ResponseEntity<Object> getUsers() {
-        List<Users> response = this.userService.getUser();
+    public ResponseEntity<Object> getBanks() {
+        List<Banks> response = this.bankService.getBanks();
         if (response.isEmpty()) {
             Message message = new Message(
                     Errors.EMPTY_REGISTERS.getCode(),
@@ -31,9 +30,9 @@ public class UserController implements UserApi {
         }
         return ResponseEntity.ok(response);
     }
-    @Override
-    public ResponseEntity<Object> getUserById(Integer id) {
 
+    @Override
+    public ResponseEntity<Object> getBankById(int id) {
         if(id <= 0) {
             Message message = new Message(
                     Errors.MORE_THEN_ZERO.getCode(),
@@ -41,11 +40,11 @@ public class UserController implements UserApi {
             );
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
-        Users response = this.userService.getUserById(id);
+        Banks response = this.bankService.getBankById(id);
         if (response == null) {
             Message message = new Message(
-                    Errors.USER_NOT_FOUND.getCode(),
-                    Errors.USER_NOT_FOUND.getMessage()
+                    Errors.BANK_NOT_FOUND.getCode(),
+                    Errors.BANK_NOT_FOUND.getMessage()
             );
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
@@ -53,13 +52,13 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<Object> saveUser(Users user) {
-        Users response = this.userService.saveUser(user);
+    public ResponseEntity<Object> saveBank(Banks bank) {
+        Banks response = this.bankService.saveBank(bank);
         return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<Object> deleteUser(Integer id) {
+    public ResponseEntity<Object> deleteBank(int id) {
         if(id <= 0) {
             Message message = new Message(
                     Errors.MORE_THEN_ZERO.getCode(),
@@ -67,19 +66,19 @@ public class UserController implements UserApi {
             );
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
-        if (this.userService.getUserById(id) == null) {
+        if (this.bankService.getBankById(id) == null) {
             Message message = new Message(
-                    Errors.USER_NOT_FOUND.getCode(),
-                    Errors.USER_NOT_FOUND.getMessage()
+                    Errors.BANK_NOT_FOUND.getCode(),
+                    Errors.BANK_NOT_FOUND.getMessage()
             );
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
-        this.userService.deleteUser(id);
+        this.bankService.deleteBank(id);
         Message message = new Message(
                 200,
-                "User deleted successfully"
+                "Bank deleted successfully"
         );
-
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        return ResponseEntity.ok(message);
     }
+
 }
