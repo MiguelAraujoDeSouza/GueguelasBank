@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface UserApi {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    ResponseEntity<List<Users>> getUsers();
+    ResponseEntity<Object> getUsers();
 }
